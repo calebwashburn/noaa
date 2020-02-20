@@ -404,11 +404,11 @@ func (c *Consumer) websocketConn(path, authToken string) (*websocket.Conn, error
 func (c *Consumer) websocketConnNewToken(path string) (*websocket.Conn, error) {
 	token, err := c.getToken()
 	if err != nil {
-		return nil, err
+		return nil, noaa_errors.NewNonRetryError(err)
 	}
 	ws, httpErr := c.tryWebsocketConnection(path, token)
 	if httpErr != nil {
-		return nil, httpErr.error
+		return nil, noaa_errors.NewNonRetryError(httpErr.error)
 	}
 	return ws, nil
 }
